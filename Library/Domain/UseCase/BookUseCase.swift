@@ -12,5 +12,5 @@ public protocol BookUseCase {
     func get(completion: @escaping (Result<[Book], Error>) -> Void)
     func get(with query: String, completion: @escaping (Result<[Book], Error>) -> Void)
     func save(book: Book, completion: @escaping (Result<Void, Error>) -> Void)
-    func delete(completion: @escaping (Result<Void ,Error>) -> Void)
+    func delete(book: Book, completion: @escaping (Result<Void ,Error>) -> Void)
 }

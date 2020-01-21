@@ -8,7 +8,9 @@
 
 import UIKit
 import Domain
+import LocalPlatform
 import NetworkPlatform
+import Then
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,12 +19,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow()
-        let networkUseCaseProvider: Domain.UseCaseProvider = NetworkPlatform.UseCaseProvider()
+        let networkUseCase: Domain.BookUseCase = NetworkPlatform.UseCaseProvider().makeBookUseCase()
+        let localUseCase: Domain.BookUseCase = LocalPlatform.UseCaseProvider().makeBookUseCase()
         
-        let bookView = BooksViewController()
-        bookView.bookUseCase = networkUseCaseProvider.makeBookUseCase()
+        let booksView = BooksViewController().then {
+            $0.tabBarItem = .init(title: "Book", image: UIImage(systemName: "book.fill"), tag: 0)
+        }
         
-        window?.rootViewController = bookView
+        booksView.bookUseCase = networkUseCase
+        booksView.favoriteBookUseCase = localUseCase
+        
+        let favoriteBooksView = FavoriteBooksViewController().then {
+            $0.tabBarItem = .init(title: "Favorite", image: UIImage(systemName: "heart.fill"), tag: 0)
+        }
+        favoriteBooksView.favoriteBookUseCase = localUseCase
+        
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([booksView, favoriteBooksView], animated: true)
+        
+        window?.rootViewController = tabBarController
         
         window?.makeKeyAndVisible()
         return true

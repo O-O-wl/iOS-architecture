@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Book: Codable {
+public struct Book: Codable, Equatable, Hashable {
     public let title: String
     public let imageURL: String
     public let author: String

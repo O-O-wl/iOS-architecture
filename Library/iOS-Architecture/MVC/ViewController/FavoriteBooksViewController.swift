@@ -1,6 +1,6 @@
 //
-//  ViewController.swift
-//  Library
+//  FavoriteBooksViewController.swift
+//  MVC
 //
 //  Created by 이동영 on 2020/01/21.
 //  Copyright © 2020 이동영. All rights reserved.
@@ -11,16 +11,14 @@ import Domain
 import SnapKit
 import Then
 
-class BooksViewController: BaseViewController{
+class FavoriteBooksViewController: BaseViewController{
     
     // MARK: - Dependencies
     
-    var bookUseCase: Domain.BookUseCase?
     var favoriteBookUseCase: Domain.BookUseCase?
     
     // MARK: - UI
     
-    private let searchBar = UISearchBar()
     private let booksTableView = UITableView()
     
     
@@ -30,23 +28,30 @@ class BooksViewController: BaseViewController{
     
     // MARK: - Initialization
     
+    override func initialize() {
+        super.initialize()
+        
+        fetchBooks()
+    }
+    
+    // MARK: - Life cycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        fetchBooks()
+    }
     
     // MARK: - Layouts
     
     override func setupLayout() {
         super.setupLayout()
         
-        view.addSubviews(views: searchBar, booksTableView)
+        view.addSubviews(views: booksTableView)
         
-        searchBar.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(50)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(50)
-        }
         
         booksTableView.snp.makeConstraints {
-            $0.top.equalTo(searchBar.snp.bottom)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
     
@@ -55,7 +60,6 @@ class BooksViewController: BaseViewController{
     override func setupAttribute() {
         super.setupAttribute()
         
-        searchBar.delegate = self
         
         booksTableView.do {
             $0.delegate = self
@@ -67,8 +71,8 @@ class BooksViewController: BaseViewController{
     
     // MARK: - Methods
     
-    private func fetchBooks(with query: String) {
-        bookUseCase?.get(with: query) { [weak self] result in
+    private func fetchBooks() {
+        favoriteBookUseCase?.get() { [weak self] result in
             switch result {
             case .success(let books):
                 self?.books = books
@@ -99,20 +103,9 @@ class BooksViewController: BaseViewController{
     
 }
 
-// MARK: - UISearchBarDelegate
-
-extension BooksViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let query = searchBar.text else { return }
-        
-        fetchBooks(with: query)
-        self.view.endEditing(true)
-    }
-}
-
 // MARK: - UITableViewDataSource
 
-extension BooksViewController: UITableViewDataSource {
+extension FavoriteBooksViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return books.count
     }
@@ -123,26 +116,13 @@ extension BooksViewController: UITableViewDataSource {
             else { return BookCell() }
         let book = books[indexPath.row]
         cell.configure(book)
-        
         // FIXME: - 로직 분리 고려
-        cell.favoriteButtonDidTap = { favorite in
-            switch favorite {
-            case true: self.favoriteBookUseCase?.save(book: book) { result in
-                switch result {
-                case .success(_):
-                    self.alert(message: "저장 완료")
-                case .failure(let error):
-                    self.alert(message: error.localizedDescription)
-                }
-                }
-            case false: self.favoriteBookUseCase?.delete(book: book) { result in
-                switch result {
-                case .success(_):
-                    self.alert(message: "삭제 완료")
-                case .failure(let error):
-                    self.alert(message: error.localizedDescription)
-                }
-                }
+        
+        cell.favoriteButtonDidTap = { _ in
+            self.favoriteBookUseCase?.delete(book: book) { _ in
+                self.alert(message: "삭제 완료")
+                self.books.remove(at: indexPath.row)
+                self.display()
             }
         }
         return cell
@@ -151,7 +131,7 @@ extension BooksViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 
-extension BooksViewController: UITableViewDelegate {
+extension FavoriteBooksViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

@@ -55,3 +55,17 @@ target 'NetworkPlatformTests' do
      pod 'Alamofire'
 
 end
+
+target 'LocalPlatform' do
+     pod 'Then'
+     pod 'SnapKit'
+     pod 'Alamofire'
+
+end
+
+target 'LocalPlatformTests' do
+     pod 'Then'
+     pod 'SnapKit'
+     pod 'Alamofire'
+
+end

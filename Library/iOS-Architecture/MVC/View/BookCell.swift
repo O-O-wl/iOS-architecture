@@ -12,6 +12,8 @@ import SnapKit
 import Then
 
 public class BookCell: UITableViewCell {
+    static let filledHeart = UIImage(systemName: "heart.fill")!
+    static let emptyHeart = UIImage(systemName: "heart")!
     
     static let reuseIdentifier = String(describing: self)
     
@@ -21,6 +23,11 @@ public class BookCell: UITableViewCell {
     private let titleLabel = UILabel()
     private let priceLabel = UILabel()
     private let authorLabel = UILabel()
+    private let favoriteImageView = UIImageView()
+    
+    // MARK: - Closure
+    
+    var favoriteButtonDidTap: ((Bool) -> Void)?
     
     // MARK: - Initialization
     
@@ -41,7 +48,7 @@ public class BookCell: UITableViewCell {
     // MARK: - Layouts
     
     private func setupLayout() {
-        self.addSubviews(views: bookImageView, titleLabel, priceLabel, authorLabel)
+        self.addSubviews(views: bookImageView, titleLabel, priceLabel, authorLabel, favoriteImageView)
         
         bookImageView.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview().inset(5)
@@ -61,6 +68,14 @@ public class BookCell: UITableViewCell {
         priceLabel.snp.makeConstraints {
             $0.top.equalTo(authorLabel.snp.bottom).offset(5)
             $0.leading.equalTo(bookImageView.snp.trailing).offset(10)
+        }
+        
+        favoriteImageView.snp.makeConstraints {
+            $0.top.equalTo(priceLabel.snp.top).offset(5)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(30)
+            $0.width.equalTo(35)
         }
     }
     
@@ -84,6 +99,13 @@ public class BookCell: UITableViewCell {
         bookImageView.do {
             $0.contentMode = .scaleAspectFit
         }
+        
+        favoriteImageView.do {
+            $0.image = BookCell.emptyHeart
+            $0.isUserInteractionEnabled = true
+            $0.tintColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+            $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(favorite)))
+        }
     }
     
     func configure(_ book: Book) {
@@ -96,7 +118,15 @@ public class BookCell: UITableViewCell {
             }
         }
         titleLabel.attributedText = NSAttributedString(html: book.title)
-        authorLabel.text = book.author
+        authorLabel.attributedText = NSAttributedString(html: book.author)
         priceLabel.text = book.price
+    }
+    
+    @objc
+    func favorite() {
+        var favorite = favoriteImageView.image == BookCell.filledHeart
+        favorite.toggle()
+        favoriteImageView.image = favorite ? BookCell.filledHeart : BookCell.emptyHeart
+        self.favoriteButtonDidTap?(favorite)
     }
 }
