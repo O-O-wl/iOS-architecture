@@ -7,29 +7,54 @@
 //
 
 import UIKit
+import Domain
+import NetworkPlatform
+import LocalPlatform
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
+    var window: UIWindow?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        window = UIWindow()
+        
+        let booksView = BooksViewController().then {
+            $0.tabBarItem = .init(title: "Book",
+                                  image: UIImage(systemName: "book.fill"),
+                                  tag: 0)
+        }
+        
+        let networkUseCaseProvider: Domain.UseCaseProvider = NetworkPlatform.UseCaseProvider()
+        let localUseCaseProvider: Domain.UseCaseProvider = LocalPlatform.UseCaseProvider()
+        
+        let networkUseCase = networkUseCaseProvider.makeBookUseCase()
+        let localUseCase = localUseCaseProvider.makeBookUseCase()
+        
+        let booksPresenter = BooksPresenterImplementation(view: booksView,
+                                                          networkUseCase: networkUseCase,
+                                                          localUseCase: localUseCase)
+        booksView.presenter = booksPresenter
+        
+        let favoriteBooksView = FavoriteBooksViewController().then {
+            $0.tabBarItem = .init(title: "Favorite",
+                                  image: UIImage(systemName: "heart.fill"),
+                                  tag: 0)
+        }
+        
+        let favoriteBooksPresenter = FavoriteBooksPresenterImplementation(view: favoriteBooksView,
+                                                                          localUseCase: localUseCase)
+        favoriteBooksView.presenter = favoriteBooksPresenter
+        
+        let tabBarController = UITabBarController().then {
+            $0.setViewControllers([booksView, favoriteBooksView], animated: true)
+        }
+        
+        window?.rootViewController = tabBarController
+        
+        window?.makeKeyAndVisible()
         return true
     }
-
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-
-
 }
 
