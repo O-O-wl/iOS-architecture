@@ -1961,6 +1961,7 @@
 		};
 		0E22339523D6E1F20072CC1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E3A5E83A5D07CC8AAFDFAD01 /* Pods-MVP.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -2002,6 +2003,7 @@
 		};
 		0E22339823D6E1F20072CC1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01BA3056B7B0725562D1AFEF /* Pods-MVPTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -2043,6 +2045,7 @@
 		};
 		0E2233BB23D6E2380072CC1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EE56263A37A93CA5345673F /* Pods-MVVM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -2084,6 +2087,7 @@
 		};
 		0E2233BE23D6E2380072CC1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 16A7D850A7F931334E35DB0C /* Pods-MVVMTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -2289,6 +2293,7 @@
 		};
 		0E22341723D6EB270072CC1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 19172B4CB2C4FA9444969F42 /* Pods-NetworkPlatformTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -2389,6 +2394,7 @@
 		};
 		0E22345A23D70C750072CC1B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6711C97E65B93EC017DE1831 /* Pods-LocalPlatformTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

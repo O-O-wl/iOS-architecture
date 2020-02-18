@@ -2,30 +2,35 @@
 # platform :ios, '9.0'
 
 target 'Domain' do
-  	pod 'Then'
+    pod 'Then'
     pod 'SnapKit'
     pod 'Alamofire'
-
+    pod 'RxSwift'
+    pod 'Moya'
 end
 
 target 'MVC' do
   	pod 'Then'
     pod 'SnapKit'
     pod 'Alamofire'
-
+    pod 'RxSwift'
+    pod 'Moya'
 end
 
 target 'MVP' do
   	pod 'Then'
     pod 'SnapKit'
     pod 'Alamofire'
+    pod 'RxSwift'
+    pod 'Moya'
 end
 
 target 'MVPTests' do
    	 pod 'Then'
      pod 'SnapKit'
      pod 'Alamofire'
-
+     pod 'RxSwift'
+     pod 'Moya'
 end
 
 target 'MVVM' do
@@ -38,7 +43,8 @@ target 'MVVMTests' do
    	pod 'Then'
     pod 'SnapKit'
     pod 'Alamofire'
-
+    pod 'RxSwift'
+    pod 'Moya'
 end
 
 
@@ -46,26 +52,30 @@ target 'NetworkPlatform' do
      pod 'Then'
      pod 'SnapKit'
      pod 'Alamofire'
-
+     pod 'RxSwift'
+     pod 'Moya'
 end
 
 target 'NetworkPlatformTests' do
      pod 'Then'
      pod 'SnapKit'
      pod 'Alamofire'
-
+     pod 'RxSwift'
+     pod 'Moya'
 end
 
 target 'LocalPlatform' do
      pod 'Then'
      pod 'SnapKit'
      pod 'Alamofire'
-
+     pod 'RxSwift'
+     pod 'Moya'
 end
 
 target 'LocalPlatformTests' do
      pod 'Then'
      pod 'SnapKit'
      pod 'Alamofire'
-
+     pod 'RxSwift'
+     pod 'Moya'
 end

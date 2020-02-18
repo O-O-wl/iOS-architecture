@@ -51,7 +51,8 @@ open class Network {
                                     "X-Naver-Client-Secret": clientSecret]
         let parameter: Parameters = ["query": query]
         
-        return Alamofire.request(baseURL, method: .get,
+        return AF.request(baseURL,
+                          method: .get,
                           parameters: parameter,
                           headers: headers)
     }
